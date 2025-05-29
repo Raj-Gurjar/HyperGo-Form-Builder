@@ -1,22 +1,34 @@
-import { useState, useEffect } from 'react';
-import { DndContext, DragEndEvent, DragOverlay, DragStartEvent } from '@dnd-kit/core';
-import { v4 as uuidv4 } from 'uuid';
-import { useSearchParams, Link } from '@remix-run/react';
-import Header from '~/components/Header';
-import FormToolbox from '~/components/FormToolbox';
-import FormCanvas from '~/components/FormCanvas';
-import { FormField, FieldType } from '~/types/form';
+import { useState, useEffect } from "react";
+import {
+  DndContext,
+  DragEndEvent,
+  DragOverlay,
+  DragStartEvent,
+} from "@dnd-kit/core";
+import { v4 as uuidv4 } from "uuid";
+import { useSearchParams, Link, MetaFunction } from "@remix-run/react";
+import Header from "~/components/Header";
+import FormToolbox from "~/components/FormToolbox";
+import FormCanvas from "~/components/FormCanvas";
+import { FormField, FieldType } from "~/types/form";
+
+export const meta: MetaFunction = () => {
+  return [
+    { title: "Form builder" },
+    { name: "description", content: "Welcome to HyperGo form builder" },
+  ];
+};
 
 export default function Builder() {
   const [searchParams] = useSearchParams();
-  const formId = searchParams.get('form') || `form_${uuidv4()}`;
-  const [formName, setFormName] = useState('Untitled Form');
+  const formId = searchParams.get("form") || `form_${uuidv4()}`;
+  const [formName, setFormName] = useState("Untitled Form");
   const [fields, setFields] = useState<FormField[]>([]);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [selectedFieldId, setSelectedFieldId] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [showSaveModal, setShowSaveModal] = useState(false);
-  const [tempFormName, setTempFormName] = useState('');
+  const [tempFormName, setTempFormName] = useState("");
 
   // Load saved form from localStorage on component mount
   useEffect(() => {
@@ -24,7 +36,7 @@ export default function Builder() {
     if (savedForm) {
       const formData = JSON.parse(savedForm);
       setFields(formData.fields || []);
-      setFormName(formData.name || 'Untitled Form');
+      setFormName(formData.name || "Untitled Form");
       setIsEditing(true);
     }
   }, [formId]);
@@ -36,19 +48,19 @@ export default function Builder() {
 
   const handleSaveForm = () => {
     if (!tempFormName.trim()) {
-      alert('Please enter a form name');
+      alert("Please enter a form name");
       return;
     }
-    
+
     const formData = {
       name: tempFormName,
       fields,
-      lastModified: new Date().toISOString()
+      lastModified: new Date().toISOString(),
     };
     localStorage.setItem(formId, JSON.stringify(formData));
     setFormName(tempFormName);
     setShowSaveModal(false);
-    alert('Form saved successfully!');
+    alert("Form saved successfully!");
   };
 
   const handleDragStart = (event: DragStartEvent) => {
@@ -59,7 +71,10 @@ export default function Builder() {
     const { active, over } = event;
 
     if (over && active.id !== over.id) {
-      const activeData = active.data.current as { type: FieldType; isToolboxItem: boolean };
+      const activeData = active.data.current as {
+        type: FieldType;
+        isToolboxItem: boolean;
+      };
 
       if (activeData.isToolboxItem) {
         const newField: FormField = {
@@ -67,12 +82,16 @@ export default function Builder() {
           type: activeData.type,
           label: `New ${activeData.type} field`,
           required: false,
-          ...(activeData.type === 'text' || activeData.type === 'textarea' ? {
-            placeholder: `Enter ${activeData.type}...`
-          } : {}),
-          ...(activeData.type === 'dropdown' ? {
-            options: ['Option 1', 'Option 2', 'Option 3']
-          } : {})
+          ...(activeData.type === "text" || activeData.type === "textarea"
+            ? {
+                placeholder: `Enter ${activeData.type}...`,
+              }
+            : {}),
+          ...(activeData.type === "dropdown"
+            ? {
+                options: ["Option 1", "Option 2", "Option 3"],
+              }
+            : {}),
         };
 
         setFields((prevFields) => [...prevFields, newField]);
@@ -95,7 +114,9 @@ export default function Builder() {
 
   const handleFieldUpdate = (updatedField: FormField) => {
     setFields((prevFields) =>
-      prevFields.map((field) => (field.id === updatedField.id ? updatedField : field))
+      prevFields.map((field) =>
+        field.id === updatedField.id ? updatedField : field
+      )
     );
   };
 
@@ -112,107 +133,113 @@ export default function Builder() {
 
   const getDragOverlayContent = () => {
     if (!activeId) return null;
-    
-    const field = fields.find(f => f.id === activeId);
+
+    const field = fields.find((f) => f.id === activeId);
     if (field) {
       return field.label;
     }
-    
+
     // For toolbox items
-    return activeId.replace('toolbox-', '');
+    return activeId.replace("toolbox-", "");
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <>
       <Header />
-      <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-        <div className="flex flex-wrap">
-          <FormToolbox />
-          <div className="flex-1">
-            <div className="flex justify-between items-center p-4">
-              <div className="flex items-center space-x-4">
-                <Link
-                  to="/my-forms"
-                  className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+
+      <div className="min-h-screen max-w-[1280px] mx-auto bg-white dark:bg-gray-900">
+        <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+          <div className="flex flex-wrap">
+            <FormToolbox />
+            <div className="flex-1">
+              <div className="flex justify-between items-center p-4">
+                <div className="flex items-center space-x-4">
+                  <Link
+                    to="/my-forms"
+                    className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+                  >
+                    ← Back to My Forms
+                  </Link>
+                  <input
+                    type="text"
+                    value={formName}
+                    onChange={(e) => setFormName(e.target.value)}
+                    className="px-3 py-2 text-xl text-blue-500 font-semibold bg-transparent border-b border-gray-300 dark:border-gray-600 focus:outline-none focus:border-blue-500 dark:text-white"
+                    placeholder="Untitled Form"
+                  />
+                </div>
+                <div className="flex items-center space-x-4">
+                  <button
+                    onClick={handleSaveClick}
+                    className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                  >
+                    Save Form
+                  </button>
+                </div>
+              </div>
+              <FormCanvas
+                fields={fields}
+                selectedFieldId={selectedFieldId}
+                onFieldSelect={setSelectedFieldId}
+                onFieldUpdate={handleFieldUpdate}
+                onFieldDelete={handleFieldDelete}
+                onFieldReorder={handleFieldReorder}
+              />
+            </div>
+          </div>
+          <DragOverlay>
+            {activeId ? (
+              <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
+                <span className="text-gray-700 dark:text-gray-300">
+                  {getDragOverlayContent()}
+                </span>
+              </div>
+            ) : null}
+          </DragOverlay>
+        </DndContext>
+
+        {/* Save Modal */}
+        {showSaveModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-30">
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md">
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+                Save Form
+              </h2>
+              <div className="mb-4">
+                <label
+                  htmlFor="formName"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                 >
-                  ← Back to My Forms
-                </Link>
+                  Form Name
+                </label>
                 <input
                   type="text"
-                  value={formName}
-                  onChange={(e) => setFormName(e.target.value)}
-                  className="px-3 py-2 text-xl text-blue-500 font-semibold bg-transparent border-b border-gray-300 dark:border-gray-600 focus:outline-none focus:border-blue-500 dark:text-white"
-                  placeholder="Untitled Form"
+                  id="formName"
+                  value={tempFormName}
+                  onChange={(e) => setTempFormName(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                  placeholder="Enter form name"
+                  autoFocus
                 />
               </div>
-              <div className="flex items-center space-x-4">
+              <div className="flex justify-end space-x-3">
                 <button
-                  onClick={handleSaveClick}
+                  onClick={() => setShowSaveModal(false)}
+                  className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleSaveForm}
                   className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
                 >
-                  Save Form
+                  Save
                 </button>
               </div>
             </div>
-            <FormCanvas
-              fields={fields}
-              selectedFieldId={selectedFieldId}
-              onFieldSelect={setSelectedFieldId}
-              onFieldUpdate={handleFieldUpdate}
-              onFieldDelete={handleFieldDelete}
-              onFieldReorder={handleFieldReorder}
-            />
           </div>
-        </div>
-        <DragOverlay>
-          {activeId ? (
-            <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
-              <span className="text-gray-700 dark:text-gray-300">
-                {getDragOverlayContent()}
-              </span>
-            </div>
-          ) : null}
-        </DragOverlay>
-      </DndContext>
-
-      {/* Save Modal */}
-      {showSaveModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md">
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-              Save Form
-            </h2>
-            <div className="mb-4">
-              <label htmlFor="formName" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Form Name
-              </label>
-              <input
-                type="text"
-                id="formName"
-                value={tempFormName}
-                onChange={(e) => setTempFormName(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
-                placeholder="Enter form name"
-                autoFocus
-              />
-            </div>
-            <div className="flex justify-end space-x-3">
-              <button
-                onClick={() => setShowSaveModal(false)}
-                className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleSaveForm}
-                className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
-              >
-                Save
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </>
   );
-} 
+}
