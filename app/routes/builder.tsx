@@ -1,10 +1,15 @@
-import { useState } from 'react';
-import { DndContext, DragEndEvent, DragOverlay, DragStartEvent } from '@dnd-kit/core';
-import { v4 as uuidv4 } from 'uuid';
-import Header from '~/components/Header';
-import FormToolbox from '~/components/FormToolbox';
-import FormCanvas from '~/components/FormCanvas';
-import { FormField, FieldType } from '~/types/form';
+import { useState } from "react";
+import {
+  DndContext,
+  DragEndEvent,
+  DragOverlay,
+  DragStartEvent,
+} from "@dnd-kit/core";
+import { v4 as uuidv4 } from "uuid";
+import Header from "~/components/Header";
+import FormToolbox from "~/components/FormToolbox";
+import FormCanvas from "~/components/FormCanvas";
+import { FormField, FieldType } from "~/types/form";
 
 export default function Builder() {
   const [fields, setFields] = useState<FormField[]>([]);
@@ -19,7 +24,10 @@ export default function Builder() {
     const { active, over } = event;
 
     if (over && active.id !== over.id) {
-      const activeData = active.data.current as { type: FieldType; isToolboxItem: boolean };
+      const activeData = active.data.current as {
+        type: FieldType;
+        isToolboxItem: boolean;
+      };
 
       if (activeData.isToolboxItem) {
         const newField: FormField = {
@@ -27,12 +35,16 @@ export default function Builder() {
           type: activeData.type,
           label: `New ${activeData.type} field`,
           required: false,
-          ...(activeData.type === 'text' || activeData.type === 'textarea' ? {
-            placeholder: `Enter ${activeData.type}...`
-          } : {}),
-          ...(activeData.type === 'dropdown' ? {
-            options: ['Option 1', 'Option 2', 'Option 3']
-          } : {})
+          ...(activeData.type === "text" || activeData.type === "textarea"
+            ? {
+                placeholder: `Enter ${activeData.type}...`,
+              }
+            : {}),
+          ...(activeData.type === "dropdown"
+            ? {
+                options: ["Option 1", "Option 2", "Option 3"],
+              }
+            : {}),
         };
 
         setFields((prevFields) => [...prevFields, newField]);
@@ -55,7 +67,9 @@ export default function Builder() {
 
   const handleFieldUpdate = (updatedField: FormField) => {
     setFields((prevFields) =>
-      prevFields.map((field) => (field.id === updatedField.id ? updatedField : field))
+      prevFields.map((field) =>
+        field.id === updatedField.id ? updatedField : field
+      )
     );
   };
 
@@ -72,21 +86,21 @@ export default function Builder() {
 
   const getDragOverlayContent = () => {
     if (!activeId) return null;
-    
-    const field = fields.find(f => f.id === activeId);
+
+    const field = fields.find((f) => f.id === activeId);
     if (field) {
       return field.label;
     }
-    
+
     // For toolbox items
-    return activeId.replace('toolbox-', '');
+    return activeId.replace("toolbox-", "");
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-white max-w-screen-xl mx-auto dark:bg-gray-900">
       <Header />
       <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-        <div className="flex">
+        <div className="flex flex-wrap">
           <FormToolbox />
           <FormCanvas
             fields={fields}
@@ -109,4 +123,4 @@ export default function Builder() {
       </DndContext>
     </div>
   );
-} 
+}
