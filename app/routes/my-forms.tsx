@@ -57,7 +57,7 @@ export default function MyForms() {
 
   const getShareableLink = (formId: string) => {
     const baseUrl = window.location.origin;
-    return `${baseUrl}/form/${formId}`;
+    return `${baseUrl}/forms/${formId}`;
   };
 
   const copyToClipboard = (text: string) => {
