@@ -146,7 +146,7 @@ export default function Builder() {
           <div className="flex flex-wrap">
             <FormToolbox />
             <div className="flex-1">
-              <div className="flex justify-around md:justify-between p-4">
+              <div className="flex justify-around md:justify-between p-4 overflow-hidden">
                 <div className="flex items-center space-x-2">
                   <input
                     type="text"
@@ -156,7 +156,7 @@ export default function Builder() {
                     placeholder="Untitled Form"
                   />
                 </div>
-                <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-4 ml-4">
                   <button
                     onClick={handleSaveClick}
                     className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
