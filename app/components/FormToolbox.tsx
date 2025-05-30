@@ -25,7 +25,7 @@ const ToolboxItem = ({ type, label, icon }: ToolboxItemProps) => {
         ${isDragging ? 'opacity-50' : 'hover:shadow-md hover:bg-gray-50 dark:hover:bg-gray-700'} transition-all duration-200`}
       style={{ touchAction: 'none' }}
     >
-      <div className="p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg text-blue-600 dark:text-blue-400">
+      <div className="p-1 md:p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg text-blue-600 dark:text-blue-400">
         {icon}
       </div>
       <span className="text-gray-700 dark:text-gray-300 font-medium">{label}</span>
@@ -83,17 +83,21 @@ export default function FormToolbox() {
   ];
 
   return (
-    <div className="w-72 bg-gray-50 dark:bg-gray-900 p-6 border-r border-gray-200 dark:border-gray-700">
+    <div className="w-full md:w-72 bg-gray-50 dark:bg-gray-900 p-6 border-b md:border-b-0 md:border-r border-gray-200 dark:border-gray-700">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-bold text-gray-900 dark:text-white">Form Fields</h2>
         <span className="text-xs font-medium text-gray-400 dark:text-gray-500 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded-full">
           {tools.length} fields
         </span>
       </div>
-      <div className="space-y-3">
-        {tools.map((tool) => (
-          <ToolboxItem key={tool.type} {...tool} />
-        ))}
+      <div className="overflow-x-scroll md:overflow-x-visible">
+        <div className="flex md:block space-x-4 md:space-x-0 pb-4 md:pb-0 gap-1">
+          {tools.map((tool) => (
+            <div key={tool.type} className="min-w-[150px] md:min-w-0 mb-2">
+              <ToolboxItem {...tool} />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

@@ -147,7 +147,7 @@ export default function Builder() {
             <FormToolbox />
             <div className="flex-1">
               <div className="flex justify-around md:justify-between p-4">
-                <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-2">
                   <input
                     type="text"
                     value={formName}
