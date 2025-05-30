@@ -147,19 +147,13 @@ export default function Builder() {
     <>
       <Header />
 
-      <div className="min-h-screen max-w-[1280px] mx-auto bg-white dark:bg-gray-900">
+      <div className="min-h-screen max-w-screen-xl mx-auto bg-white dark:bg-gray-900">
         <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
           <div className="flex flex-wrap">
             <FormToolbox />
             <div className="flex-1">
-              <div className="flex justify-between items-center p-4">
+              <div className="flex justify-around md:justify-between p-4">
                 <div className="flex items-center space-x-4">
-                  <Link
-                    to="/my-forms"
-                    className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
-                  >
-                    ← Back to My Forms
-                  </Link>
                   <input
                     type="text"
                     value={formName}
