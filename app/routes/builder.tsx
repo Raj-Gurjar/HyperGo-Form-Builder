@@ -4,6 +4,10 @@ import {
   DragEndEvent,
   DragOverlay,
   DragStartEvent,
+  TouchSensor,
+  MouseSensor,
+  useSensor,
+  useSensors,
 } from "@dnd-kit/core";
 import { v4 as uuidv4 } from "uuid";
 import { useSearchParams, Link, MetaFunction } from "@remix-run/react";
@@ -24,11 +28,28 @@ export default function Builder() {
   const formId = searchParams.get("form") || `form_${uuidv4()}`;
   const [formName, setFormName] = useState("Untitled Form");
   const [fields, setFields] = useState<FormField[]>([]);
-  const [activeId, setActiveId] = useState<string | null>(null);
+  const [activeDragId, setActiveDragId] = useState<string | null>(null);
   const [selectedFieldId, setSelectedFieldId] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [showSaveModal, setShowSaveModal] = useState(false);
   const [tempFormName, setTempFormName] = useState("");
+
+  // Configure sensors for better touch support
+  const sensors = useSensors(
+    useSensor(TouchSensor, {
+      // Increase activation delay for touch events to prevent accidental drags
+      activationConstraint: {
+        delay: 250,
+        tolerance: 5,
+      },
+    }),
+    useSensor(MouseSensor, {
+      // Require the mouse to move by 10 pixels before activating
+      activationConstraint: {
+        distance: 10,
+      },
+    })
+  );
 
   // Load saved form from localStorage on component mount
   useEffect(() => {
@@ -64,83 +85,52 @@ export default function Builder() {
   };
 
   const handleDragStart = (event: DragStartEvent) => {
-    setActiveId(event.active.id as string);
+    const { active } = event;
+    setActiveDragId(active.id as string);
   };
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
+    setActiveDragId(null);
 
     if (over && active.id !== over.id) {
-      const activeData = active.data.current as {
-        type: FieldType;
-        isToolboxItem: boolean;
-      };
+      const isToolboxItem = active.data.current?.isToolboxItem;
+      const type = active.data.current?.type as FieldType;
 
-      if (activeData.isToolboxItem) {
+      if (isToolboxItem) {
         const newField: FormField = {
           id: uuidv4(),
-          type: activeData.type,
-          label: `New ${activeData.type} field`,
+          type,
+          label: `New ${type.charAt(0).toUpperCase() + type.slice(1)}`,
           required: false,
-          ...(activeData.type === "text" || activeData.type === "textarea"
-            ? {
-                placeholder: `Enter ${activeData.type}...`,
-              }
-            : {}),
-          ...(activeData.type === "dropdown"
-            ? {
-                options: ["Option 1", "Option 2", "Option 3"],
-              }
-            : {}),
         };
-
-        setFields((prevFields) => [...prevFields, newField]);
-        setSelectedFieldId(newField.id);
+        setFields((prev) => [...prev, newField]);
       } else {
         const oldIndex = fields.findIndex((field) => field.id === active.id);
         const newIndex = fields.findIndex((field) => field.id === over.id);
-
-        if (oldIndex !== -1 && newIndex !== -1) {
-          const newFields = [...fields];
-          const [movedField] = newFields.splice(oldIndex, 1);
-          newFields.splice(newIndex, 0, movedField);
-          setFields(newFields);
-        }
+        const newFields = [...fields];
+        const [movedField] = newFields.splice(oldIndex, 1);
+        newFields.splice(newIndex, 0, movedField);
+        setFields(newFields);
       }
     }
-
-    setActiveId(null);
   };
 
   const handleFieldUpdate = (updatedField: FormField) => {
-    setFields((prevFields) =>
-      prevFields.map((field) =>
-        field.id === updatedField.id ? updatedField : field
-      )
+    setFields((prev) =>
+      prev.map((field) => (field.id === updatedField.id ? updatedField : field))
     );
   };
 
-  const handleFieldDelete = (id: string) => {
-    setFields((prevFields) => prevFields.filter((field) => field.id !== id));
-    if (selectedFieldId === id) {
+  const handleFieldDelete = (fieldId: string) => {
+    setFields((prev) => prev.filter((field) => field.id !== fieldId));
+    if (selectedFieldId === fieldId) {
       setSelectedFieldId(null);
     }
   };
 
-  const handleFieldReorder = (reorderedFields: FormField[]) => {
-    setFields(reorderedFields);
-  };
-
-  const getDragOverlayContent = () => {
-    if (!activeId) return null;
-
-    const field = fields.find((f) => f.id === activeId);
-    if (field) {
-      return field.label;
-    }
-
-    // For toolbox items
-    return activeId.replace("toolbox-", "");
+  const handleFieldReorder = (newFields: FormField[]) => {
+    setFields(newFields);
   };
 
   return (
@@ -148,7 +138,11 @@ export default function Builder() {
       <Header />
 
       <div className="min-h-screen max-w-screen-xl mx-auto bg-white dark:bg-gray-900">
-        <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+        <DndContext
+          sensors={sensors}
+          onDragStart={handleDragStart}
+          onDragEnd={handleDragEnd}
+        >
           <div className="flex flex-wrap">
             <FormToolbox />
             <div className="flex-1">
@@ -182,11 +176,18 @@ export default function Builder() {
             </div>
           </div>
           <DragOverlay>
-            {activeId ? (
-              <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
-                <span className="text-gray-700 dark:text-gray-300">
-                  {getDragOverlayContent()}
-                </span>
+            {activeDragId ? (
+              <div className="p-4 bg-white dark:bg-gray-800 rounded-xl shadow-lg opacity-80">
+                {activeDragId.startsWith('toolbox-') ? (
+                  <div className="text-gray-700 dark:text-gray-300">
+                    {activeDragId.replace('toolbox-', '').charAt(0).toUpperCase() +
+                      activeDragId.replace('toolbox-', '').slice(1)}
+                  </div>
+                ) : (
+                  <div className="text-gray-700 dark:text-gray-300">
+                    {fields.find((f) => f.id === activeDragId)?.label}
+                  </div>
+                )}
               </div>
             ) : null}
           </DragOverlay>
