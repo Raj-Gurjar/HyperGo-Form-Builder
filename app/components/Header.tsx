@@ -67,7 +67,7 @@ export default function Header() {
             >
               {theme === "light" ? (
                 <svg
-                  className="w-6 h-6 text-gray-200"
+                  className="w-6 h-6 text-gray-400"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
