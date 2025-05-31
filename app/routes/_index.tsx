@@ -47,9 +47,10 @@ export default function Index() {
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
               {/* Feature 1 */}
               <div className="pt-6">
-                <div className="flow-root bg-white dark:bg-gray-800 rounded-lg px-6 pb-8">
-                  <div className="-mt-6">
-                    <div className="inline-flex items-center justify-center p-3 bg-blue-500 rounded-md shadow-lg">
+                <div className="flow-root bg-white dark:bg-gray-800 rounded-lg px-6 pb-8 relative group transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+                  <div className="absolute inset-0 bg-gradient-to-r from-purple-500/0 via-purple-500/0 to-pink-500/0 rounded-lg group-hover:from-purple-500/10 group-hover:via-purple-500/5 group-hover:to-pink-500/10 transition-all duration-300" />
+                  <div className="-mt-6 relative">
+                    <div className="inline-flex items-center justify-center p-3 bg-blue-500 rounded-md shadow-lg group-hover:scale-110 transition-transform duration-300">
                       <svg
                         className="h-6 w-6 text-white"
                         fill="none"
@@ -64,7 +65,7 @@ export default function Index() {
                         />
                       </svg>
                     </div>
-                    <h3 className="mt-8 text-lg font-medium text-gray-900 dark:text-white tracking-tight">
+                    <h3 className="mt-8 text-lg font-medium text-gray-900 dark:text-white tracking-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
                       Drag & Drop Interface
                     </h3>
                     <p className="mt-5 text-base text-gray-500 dark:text-gray-300">
@@ -77,9 +78,10 @@ export default function Index() {
 
               {/* Feature 2 */}
               <div className="pt-6">
-                <div className="flow-root bg-white dark:bg-gray-800 rounded-lg px-6 pb-8">
-                  <div className="-mt-6">
-                    <div className="inline-flex items-center justify-center p-3 bg-blue-500 rounded-md shadow-lg">
+                <div className="flow-root bg-white dark:bg-gray-800 rounded-lg px-6 pb-8 relative group transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+                  <div className="absolute inset-0 bg-gradient-to-r from-purple-500/0 via-purple-500/0 to-pink-500/0 rounded-lg group-hover:from-purple-500/10 group-hover:via-purple-500/5 group-hover:to-pink-500/10 transition-all duration-300" />
+                  <div className="-mt-6 relative">
+                    <div className="inline-flex items-center justify-center p-3 bg-blue-500 rounded-md shadow-lg group-hover:scale-110 transition-transform duration-300">
                       <svg
                         className="h-6 w-6 text-white"
                         fill="none"
@@ -94,7 +96,7 @@ export default function Index() {
                         />
                       </svg>
                     </div>
-                    <h3 className="mt-8 text-lg font-medium text-gray-900 dark:text-white tracking-tight">
+                    <h3 className="mt-8 text-lg font-medium text-gray-900 dark:text-white tracking-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
                       Real-time Validation
                     </h3>
                     <p className="mt-5 text-base text-gray-500 dark:text-gray-300">
@@ -107,9 +109,10 @@ export default function Index() {
 
               {/* Feature 3 */}
               <div className="pt-6">
-                <div className="flow-root bg-white dark:bg-gray-800 rounded-lg px-6 pb-8">
-                  <div className="-mt-6">
-                    <div className="inline-flex items-center justify-center p-3 bg-blue-500 rounded-md shadow-lg">
+                <div className="flow-root bg-white dark:bg-gray-800 rounded-lg px-6 pb-8 relative group transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+                  <div className="absolute inset-0 bg-gradient-to-r from-purple-500/0 via-purple-500/0 to-pink-500/0 rounded-lg group-hover:from-purple-500/10 group-hover:via-purple-500/5 group-hover:to-pink-500/10 transition-all duration-300" />
+                  <div className="-mt-6 relative">
+                    <div className="inline-flex items-center justify-center p-3 bg-blue-500 rounded-md shadow-lg group-hover:scale-110 transition-transform duration-300">
                       <svg
                         className="h-6 w-6 text-white"
                         fill="none"
@@ -124,7 +127,7 @@ export default function Index() {
                         />
                       </svg>
                     </div>
-                    <h3 className="mt-8 text-lg font-medium text-gray-900 dark:text-white tracking-tight">
+                    <h3 className="mt-8 text-lg font-medium text-gray-900 dark:text-white tracking-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
                       Easy Sharing
                     </h3>
                     <p className="mt-5 text-base text-gray-500 dark:text-gray-300">

@@ -62,12 +62,12 @@ export default function Header() {
 
             <button
               onClick={toggleTheme}
-              className="p-2 rounded-lg bg-gray-500 dark:bg-gray-500 hover:bg-gray-800 dark:hover:bg-gray-200"
+              className="p-2 rounded-lg bg-gray-300 dark:bg-gray-500 hover:bg-gray-900 dark:hover:bg-gray-700"
               aria-label="Toggle theme"
             >
               {theme === "light" ? (
                 <svg
-                  className="w-6 h-6 text-gray-400"
+                  className="w-6 h-6 text-gray-100"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -81,7 +81,7 @@ export default function Header() {
                 </svg>
               ) : (
                 <svg
-                  className="w-6 h-6 text-yellow-300"
+                  className="w-6 h-6 text-orange-600"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
