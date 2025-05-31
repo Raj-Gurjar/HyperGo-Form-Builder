@@ -146,13 +146,13 @@ export default function Builder() {
           <div className="flex flex-wrap">
             <FormToolbox />
             <div className="flex-1">
-              <div className="flex justify-around md:justify-between p-4 overflow-hidden">
+              <div className="flex justify-between md:justify-between p-4 overflow-hidden">
                 <div className="flex items-center space-x-2">
                   <input
                     type="text"
                     value={formName}
                     onChange={(e) => setFormName(e.target.value)}
-                    className="px-3 py-2 text-xl text-blue-500 font-semibold bg-transparent border-b border-gray-300 dark:border-gray-600 focus:outline-none focus:border-blue-500 dark:text-white"
+                    className="px-3 py-2 text-xl max-w-[200px] text-blue-500 font-semibold bg-transparent border-b border-gray-300 dark:border-gray-600 focus:outline-none focus:border-blue-500 dark:text-white"
                     placeholder="Untitled Form"
                   />
                 </div>
