@@ -28,6 +28,20 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>HyperGro Forms</title>
+        <meta name="description" content="Build custom forms with our intuitive drag-and-drop interface. Add fields, configure settings, and share your forms with others in seconds." />
+        <link rel="canonical" href="https://hyper-go-form-builder.vercel.app/" />
+        <link rel="icon" type="image/png" href="/logo.png" />
+        <meta property="og:image" content="https://hyper-go-form-builder.vercel.app/logo.png" />
+        <meta property="og:image:type" content="image/png" />
+        <meta name="twitter:image" content="https://hyper-go-form-builder.vercel.app/logo.png" />
+        <meta property="og:title" content="HyperGro Forms" />
+        <meta property="og:description" content="Build custom forms with our intuitive drag-and-drop interface. Add fields, configure settings, and share your forms with others in seconds." />
+        <meta property="og:url" content="https://hyper-go-form-builder.vercel.app/" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:title" content="HyperGro Forms" />
+        <meta name="twitter:description" content="Build custom forms with our intuitive drag-and-drop interface. Add fields, configure settings, and share your forms with others in seconds." />
+        <meta name="twitter:card" content="summary_large_image" />
         <Meta />
         <Links />
       </head>

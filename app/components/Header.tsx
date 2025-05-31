@@ -42,7 +42,7 @@ export default function Header() {
                 />
               </svg>
               <span className="text-lg md:text-2xl font-bold text-blue-600 dark:text-blue-400">
-                HyperGo Forms
+                HyperGro Forms
               </span>
             </Link>
           </div>

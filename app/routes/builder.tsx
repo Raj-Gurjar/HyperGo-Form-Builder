@@ -19,7 +19,7 @@ import { FormField, FieldType } from "~/types/form";
 export const meta: MetaFunction = () => {
   return [
     { title: "Form builder" },
-    { name: "description", content: "Welcome to HyperGo form builder" },
+    { name: "description", content: "Welcome to HyperGro form builder" },
   ];
 };
 

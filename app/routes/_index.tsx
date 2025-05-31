@@ -4,8 +4,8 @@ import Header from "~/components/Header";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "HyperGo forms" },
-    { name: "description", content: "Welcome to HyperGo form builder" },
+    { title: "HyperGro forms" },
+    { name: "description", content: "Welcome to HyperGro form builder" },
   ];
 };
 
