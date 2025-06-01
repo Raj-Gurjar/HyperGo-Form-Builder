@@ -14,8 +14,9 @@ export default function Index() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Header />
 
-      <main>
+      <main className="relative">
         {/* Hero Section */}
+        <div className="heroGradient absolute left-1/2 top-[40%] h-2/5 w-4/5 -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl sm:blur-[150px] opacity-80"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
           <div className="text-center">
             <h1 className="text-4xl tracking-tight font-extrabold text-blue-600 sm:text-5xl md:text-6xl">
@@ -30,7 +31,6 @@ export default function Index() {
               seconds.
             </p>
             <div className="mt-5 max-w-md mx-auto sm:flex sm:justify-center md:mt-8">
-
               <div className="shadow relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-500 to-pink-500 group-hover:from-purple-500 group-hover:to-pink-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800">
                 <Link
                   to="/builder"

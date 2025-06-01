@@ -10,3 +10,15 @@ body {
     color-scheme: dark;
   }
 }
+.heroGradient {
+  background: linear-gradient(
+    90deg,
+    #1046f98a,
+    #61ffd0b4 35%,
+    #f9799fc1 74%,
+    #fec388
+  );
+  transform: translateZ(100);
+  will-change: transform;
+  border-radius: 50%;
+}

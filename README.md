@@ -6,7 +6,7 @@ HyperGro Forms is a dynamic form builder built with React Remix, Tailwind CSS, a
 
 -  **Live Link**: [https://hyper-gro-form-builder.vercel.app/](https://hyper-gro-form-builder.vercel.app/)
 -  **Video Tutorial**: [Watch Demo](https://www.youtube.com/watch?v=your-video-id)
--  **Documentation**: [Detailed Guide](https://github.com/Raj-Gurjar/HyperGro-Form-Builder/blob/88aac45a46d6d9b606547fdfd401b5f97a681ef8/README.md)
+-  **Documentation**: [Detailed Guide](https://github.com/Raj-Gurjar/HyperGro-Form-Builder/blob/85f7ba05985f47d569244eaea0fb2bfabd7201cd/README.md)
 
 ### Application Features
 
