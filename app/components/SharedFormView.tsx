@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { FormField } from '~/types/form';
+import { showToast } from '~/utils/toast';
 
 interface SharedFormViewProps {
   form: {
@@ -158,12 +159,13 @@ export default function SharedFormView({ form }: SharedFormViewProps) {
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
+      showToast.error('Please fix the errors in the form');
       return;
     }
 
     // Here you would typically handle the form submission
     console.log('Form submitted:', formData);
-    alert('Form submitted successfully!');
+    showToast.success('Form submitted successfully!');
     setFormData({});
   };
 

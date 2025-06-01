@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from '@remix-run/react';
 import { FormField } from '~/types/form';
 import Header from '~/components/Header';
+import { showToast } from '~/utils/toast';
 
 export default function PreviewForm() {
   const { formId } = useParams();
@@ -35,7 +36,7 @@ export default function PreviewForm() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Form submitted with values:', formValues);
-    alert('Form submitted successfully!');
+    showToast.success('Form submitted successfully!');
   };
 
   if (!formData) {

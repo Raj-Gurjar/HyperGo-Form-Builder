@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
-import { Link } from '@remix-run/react';
-import { FormField } from '~/types/form';
-import Header from '~/components/Header';
+import { useState, useEffect } from "react";
+import { Link } from "@remix-run/react";
+import { FormField } from "~/types/form";
+import Header from "~/components/Header";
+import { showToast } from "~/utils/toast";
 
 interface SavedForm {
   id: string;
@@ -21,33 +22,38 @@ export default function MyForms() {
       const forms: SavedForm[] = [];
       for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
-        if (key?.startsWith('form_')) {
+        if (key?.startsWith("form_")) {
           try {
-            const formData = JSON.parse(localStorage.getItem(key) || '');
+            const formData = JSON.parse(localStorage.getItem(key) || "");
             forms.push({
               id: key,
-              name: formData.name || 'Untitled Form',
+              name: formData.name || "Untitled Form",
               fields: formData.fields || [],
-              lastModified: formData.lastModified || new Date().toISOString()
+              lastModified: formData.lastModified || new Date().toISOString(),
             });
           } catch (error) {
-            console.error('Error parsing form data:', error);
+            console.error("Error parsing form data:", error);
           }
         }
       }
-      setSavedForms(forms.sort((a, b) => 
-        new Date(b.lastModified).getTime() - new Date(a.lastModified).getTime()
-      ));
+      setSavedForms(
+        forms.sort(
+          (a, b) =>
+            new Date(b.lastModified).getTime() -
+            new Date(a.lastModified).getTime()
+        )
+      );
     };
 
     loadSavedForms();
   }, []);
 
   const handleDeleteForm = (formId: string) => {
-    if (window.confirm('Are you sure you want to delete this form?')) {
-      localStorage.removeItem(formId);
-      setSavedForms(prevForms => prevForms.filter(form => form.id !== formId));
-    }
+    localStorage.removeItem(formId);
+    setSavedForms((prevForms) =>
+      prevForms.filter((form) => form.id !== formId)
+    );
+    showToast.success("Form deleted successfully");
   };
 
   const handleShareClick = (formId: string) => {
@@ -61,11 +67,15 @@ export default function MyForms() {
   };
 
   const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text).then(() => {
-      alert('Link copied to clipboard!');
-    }).catch(err => {
-      console.error('Failed to copy text: ', err);
-    });
+    navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        showToast.success("Link copied to clipboard!");
+      })
+      .catch((err) => {
+        console.error("Failed to copy text: ", err);
+        showToast.error("Failed to copy link");
+      });
   };
 
   return (
@@ -73,7 +83,9 @@ export default function MyForms() {
       <Header />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">My Forms</h1>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+            My Forms
+          </h1>
           <Link
             to="/builder"
             className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
@@ -121,7 +133,12 @@ export default function MyForms() {
                     onClick={() => handleDeleteForm(form.id)}
                     className="text-red-500 hover:text-red-700 dark:hover:text-red-400"
                   >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -133,10 +150,12 @@ export default function MyForms() {
                 </div>
                 <div className="space-y-2">
                   <p className="text-sm text-gray-500 dark:text-gray-400">
-                    {form.fields.length} field{form.fields.length !== 1 ? 's' : ''}
+                    {form.fields.length} field
+                    {form.fields.length !== 1 ? "s" : ""}
                   </p>
                   <p className="text-sm text-gray-500 dark:text-gray-400">
-                    Last modified: {new Date(form.lastModified).toLocaleString()}
+                    Last modified:{" "}
+                    {new Date(form.lastModified).toLocaleString()}
                   </p>
                 </div>
                 <div className="mt-4 flex justify-end space-x-2">
@@ -184,7 +203,9 @@ export default function MyForms() {
                   className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
                 <button
-                  onClick={() => copyToClipboard(getShareableLink(selectedFormId))}
+                  onClick={() =>
+                    copyToClipboard(getShareableLink(selectedFormId))
+                  }
                   className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                 >
                   Copy
@@ -204,4 +225,4 @@ export default function MyForms() {
       )}
     </div>
   );
-} 
+}

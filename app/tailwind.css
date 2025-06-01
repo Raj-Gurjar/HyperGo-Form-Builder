@@ -22,3 +22,22 @@ body {
   will-change: transform;
   border-radius: 50%;
 }
+
+/* Custom styles for date input calendar icon */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.5);
+  transition: filter 0.2s ease-in-out;
+}
+
+input[type="date"]:focus::-webkit-calendar-picker-indicator {
+  filter: invert(0.3);
+}
+
+/* Dark mode styles */
+.dark input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.7);
+}
+
+.dark input[type="date"]:focus::-webkit-calendar-picker-indicator {
+  filter: invert(0.9);
+}

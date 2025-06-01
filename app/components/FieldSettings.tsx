@@ -58,17 +58,47 @@ export default function FieldSettings({ field, onUpdate, onDelete }: FieldSettin
         return (
           <div className="space-y-2">
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-              Options (separated by ,,)
+              Options
             </label>
-            <input
-              type="text"
-              value={field.options?.join(',,') || ''}
-              onChange={(e) => handleChange('options', e.target.value.split(',,').map(opt => opt.trim()).filter(Boolean))}
-              placeholder="Option 1,,Option 2,,Option 3"
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
-            />
+            <div className="space-y-2">
+              {field.options?.map((option, index) => (
+                <div key={index} className="flex gap-2">
+                  <input
+                    type="text"
+                    value={option}
+                    onChange={(e) => {
+                      const newOptions = [...(field.options || [])];
+                      newOptions[index] = e.target.value;
+                      handleChange('options', newOptions);
+                    }}
+                    placeholder={`Option ${index + 1}`}
+                    className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                  />
+                  <button
+                    onClick={() => {
+                      const newOptions = field.options?.filter((_, i) => i !== index) || [];
+                      handleChange('options', newOptions);
+                    }}
+                    className="p-2 text-red-500 hover:text-red-700 dark:hover:text-red-400"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                  </button>
+                </div>
+              ))}
+              <button
+                onClick={() => {
+                  const newOptions = [...(field.options || []), ''];
+                  handleChange('options', newOptions);
+                }}
+                className="w-full px-3 py-2 text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 border border-dashed border-blue-600 dark:border-blue-400 rounded-md hover:bg-blue-50 dark:hover:bg-blue-900/20"
+              >
+                + Add Option
+              </button>
+            </div>
             <p className="text-xs text-gray-500 dark:text-gray-400">
-              Enter options separated by double commas (,,). Example: Option 1,,Option 2,,Option 3
+              Add multiple options by clicking the "Add Option" button
             </p>
           </div>
         );

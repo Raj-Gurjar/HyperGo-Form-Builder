@@ -15,6 +15,7 @@ import Header from "~/components/Header";
 import FormToolbox from "~/components/FormToolbox";
 import FormCanvas from "~/components/FormCanvas";
 import { FormField, FieldType } from "~/types/form";
+import { showToast } from '~/utils/toast';
 
 export const meta: MetaFunction = () => {
   return [
@@ -69,7 +70,7 @@ export default function Builder() {
 
   const handleSaveForm = () => {
     if (!tempFormName.trim()) {
-      alert("Please enter a form name");
+      showToast.error("Please enter a form name");
       return;
     }
 
@@ -81,7 +82,7 @@ export default function Builder() {
     localStorage.setItem(formId, JSON.stringify(formData));
     setFormName(tempFormName);
     setShowSaveModal(false);
-    alert("Form saved successfully!");
+    showToast.success("Form saved successfully!");
   };
 
   const handleDragStart = (event: DragStartEvent) => {
